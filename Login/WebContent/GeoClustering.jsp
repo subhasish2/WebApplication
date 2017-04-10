@@ -1,6 +1,7 @@
+<%@page import="com.Clustering.Location"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="com.Clustering.PDBSCAN"%>
+	pageEncoding="ISO-8859-1" import="com.Clustering.DBSCAN"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="java.util.Scanner"%>
 <%@ page import="java.io.File"%>
@@ -24,15 +25,15 @@ html, body {
 	<div id="map"></div>
 	<%
 		String filename = "C:/Users/Subhasish/git/WebApp/Login/csv/bike.csv";
-		PDBSCAN d = new PDBSCAN(filename, 1000, 2);
-		String outfile = d.PDBSCAN_Clustering();
-		ArrayList<String> centers = new ArrayList<String>();
+		DBSCAN d = new DBSCAN(filename, 20, 2);
+		String outfile = d.DBSCAN_Clustering();
+		ArrayList<Location> centers = d.getCentroids();
 	%>
 	<script>
 		function initMap() {
 
 			var map = new google.maps.Map(document.getElementById('map'), {
-				zoom : 10,
+				zoom : 12,
 				center : {
 					lat : 22.5613695,
 					lng : 88.4144755
@@ -56,7 +57,7 @@ html, body {
 			var circles = centers.map(function(center, i) {
 				return new google.maps.Circle({
 					center : center,
-					radius : 1000,
+					radius : 20,
 					strokeColor : "#0000FF",
 					strokeOpacity : 0.3,
 					strokeWeight : 1,
@@ -76,19 +77,22 @@ html, body {
 				String[] headpart = header.split(" ");
 				String[] cl_info = headpart[1].split(":");
 				int cl_size = Integer.parseInt(cl_info[1]);
-				String center = scan.nextLine();
-				centers.add(center.substring(0, center.length() - 1));
-				out.println(center);
+				//String center = scan.nextLine();
+				//centers.add(center.substring(0, center.length() - 1));
+				//out.println(center);
 				if (scan.hasNext())
-					for (int i = 0; i < cl_size - 1; i++)
+					for (int i = 0; i < cl_size; i++)
 						out.println(scan.nextLine());
 			}%>
 		]
 
 		var centers = [
-	<%for (int i = 0; i < centers.size() - 1; i++)
-				out.println(centers.get(i) + ",");
-			out.println(centers.get(centers.size() - 1));%>
+	<%for (int i = 0; i < centers.size() - 1; i++) {
+				Location l = centers.get(i);
+				out.println("{lat: " + l.getLatitude() + ", lng: " + l.getLongitude() + "},");
+			}
+			Location l = centers.get(centers.size() - 1);
+			out.println("{lat: " + l.getLatitude() + ", lng: " + l.getLongitude() + "}");%>
 		]
 
 		//

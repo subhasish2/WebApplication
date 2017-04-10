@@ -16,7 +16,8 @@ public class PDBSCAN {
 	int Eps, MinPts;
 	Map<Location, PointStatus> visited;
 	String outputfile = "C:/Users/Subhasish/git/WebApp/Login/Output/mapfile_" + new Date().getTime() + ".txt";
-	Writer writer = new Writer("C:/Users/Subhasish/git/WebApp/Login/Output/file_" + new Date().getTime() + ".txt", outputfile);
+	Writer writer = new Writer("C:/Users/Subhasish/git/WebApp/Login/Output/file_" + new Date().getTime() + ".txt",
+			outputfile);
 
 	public PDBSCAN(ArrayList<Location> points, int eps, int minpts) {
 		Eps = eps;

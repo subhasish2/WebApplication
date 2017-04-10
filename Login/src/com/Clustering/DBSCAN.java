@@ -1,36 +1,45 @@
 package com.Clustering;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import com.io.CsvParser;
+import com.io.Writer;
 
 public class DBSCAN {
 	ArrayList<Location> SetofPoints;
 	ArrayList<Cluster> clusters;
+	ArrayList<Location> centroids;
 	int Eps, MinPts;
 	Map<Location, PointStatus> visited;
+	String outputfile = "C:/Users/Subhasish/git/WebApp/Login/Output/mapfile_" + new Date().getTime() + ".txt";
+	Writer writer = new Writer("C:/Users/Subhasish/git/WebApp/Login/Output/file_" + new Date().getTime() + ".txt",
+			outputfile);
 
 	public DBSCAN(ArrayList<Location> points, int eps, int minpts) {
 		Eps = eps;
 		MinPts = minpts;
 		SetofPoints = new ArrayList<>(points);
 		clusters = new ArrayList<>();
+		centroids=new ArrayList<>();
 		visited = new HashMap<Location, PointStatus>();
 	}
+
 	public DBSCAN(String filename, int eps, int minpts) {
 		CsvParser parser = new CsvParser(filename);
 		Eps = eps;
 		MinPts = minpts;
 		SetofPoints = new ArrayList<>(parser.readData());
 		clusters = new ArrayList<>();
+		centroids=new ArrayList<>();
 		visited = new HashMap<Location, PointStatus>();
 	}
 
-	public void DBSCAN_Clustering() {
+	public String DBSCAN_Clustering() {
 		for (Location loc : SetofPoints) {
 			if (visited.get(loc) != null)
 				continue;
@@ -42,10 +51,14 @@ public class DBSCAN {
 				visited.put(loc, PointStatus.NOISE);
 			}
 		}
-		System.out.println("No. of Cluster: "+clusters.size());
-		for(Cluster c:clusters) {
-			c.showCluster();
-		}
+		/*
+		 * for (Cluster c : clusters) { c.showCluster(); }
+		 */
+		for(Cluster c:clusters)
+			centroids.add(c.getCentroid());
+		writer.write(clusters);
+		System.out.println("No. of Cluster: " + clusters.size());
+		return outputfile;
 	}
 
 	private Cluster expandCluster(Location loc, Cluster newCluster, ArrayList<Location> neighbours) {
@@ -69,7 +82,7 @@ public class DBSCAN {
 
 			index++;
 		}
-		
+
 		return newCluster;
 
 	}
@@ -93,15 +106,20 @@ public class DBSCAN {
 		}
 		return one;
 	}
-	public void showStatus(){
-		for(Map.Entry<Location, PointStatus> i:visited.entrySet()) {
-			System.out.println(i.getKey()+" "+i.getValue());
+
+	public void showStatus() {
+		for (Map.Entry<Location, PointStatus> i : visited.entrySet()) {
+			System.out.println(i.getKey() + " " + i.getValue());
 		}
 	}
-	public void showClusters(){
-		for(Cluster c:clusters) {
+
+	public void showClusters() {
+		for (Cluster c : clusters) {
 			c.showCluster();
 		}
+	}
+	public ArrayList<Location> getCentroids() {
+		return centroids;
 	}
 
 }
