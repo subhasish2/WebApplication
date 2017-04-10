@@ -46,15 +46,15 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		response.getWriter().println("<!DOCTYPE HTML><html><head><title>Welcome</title><link rel='stylesheet' href='style.css'></head><body>");
 		if (request.getParameter("login") != null) {
 			//response.getWriter().println("<h3>login button is pressed</h3>");
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			if (validator.validateUser(username, password))
-				response.getWriter().println("<h3>Login Successfully</h3>");
+				response.getWriter().println("<h3 align='center'>Login Successfully</h3>");
 			else {
-				response.getWriter().println("<h3>Username/Password is incorrect!!</h3>");
+				response.getWriter().println("<h3 align='center'>Username/Password is incorrect!!</h3>");
 				response.setHeader("Refresh", "4;login.html");
 			}
 		} else if (request.getParameter("create") != null) {
@@ -63,11 +63,11 @@ public class LoginServlet extends HttpServlet {
 			user = new User(request.getParameter("name"), request.getParameter("username"),
 					request.getParameter("email"), request.getParameter("password"));
 			if (register.insert(user))
-				response.getWriter().println(
-						"<h3>Register Successfully</h3><p><i>Redirect to the login page. Don't Refresh!!<i></p>");
+				response.getWriter().println("<h3 align='center'>Register Successfully</h3><p><i>Redirect to the login page. Don't Refresh!!<i></p>");
 			response.setHeader("Refresh", "6;login.html");
 
 		}
+		response.getWriter().println("</body></html>");
 	}
 
 }
