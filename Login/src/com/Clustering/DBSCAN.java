@@ -16,8 +16,8 @@ public class DBSCAN {
 	ArrayList<Location> centroids;
 	int Eps, MinPts;
 	Map<Location, PointStatus> visited;
-	String outputfile = "C:/Users/Subhasish/git/WebApplication/Login/Output/mapfile_" + new Date().getTime() + ".txt";
-	Writer writer = new Writer("C:/Users/Subhasish/git/WebApplication/Login/Output/file_" + new Date().getTime() + ".txt",
+	String outputfile = "C:/Users/Subhasish/git/WebApp/Login/Output/mapfile_" + new Date().getTime() + ".txt";
+	Writer writer = new Writer("C:/Users/Subhasish/git/WebApp/Login/Output/file_" + new Date().getTime() + ".txt",
 			outputfile);
 
 	public DBSCAN(ArrayList<Location> points, int eps, int minpts) {
@@ -123,6 +123,9 @@ public class DBSCAN {
 	}
 	public ArrayList<Location> getCentroids() {
 		return centroids;
+	}
+	public ArrayList<Cluster> getClusters() {
+		return clusters;
 	}
 
 }

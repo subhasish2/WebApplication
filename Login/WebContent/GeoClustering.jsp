@@ -1,4 +1,5 @@
 <%@page import="com.Clustering.Location"%>
+<%@page import="com.Clustering.Cluster"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="com.Clustering.DBSCAN"%>
@@ -24,10 +25,11 @@ html, body {
 <body>
 	<div id="map"></div>
 	<%
-		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/bike.csv";
+		String filename = "C:/Users/Subhasish/git/WebApp/Login/csv/bike.csv";
 		DBSCAN d = new DBSCAN(filename, 20, 2);
 		String outfile = d.DBSCAN_Clustering();
 		ArrayList<Location> centers = d.getCentroids();
+		ArrayList<Cluster> clusters = d.getClusters();
 	%>
 	<script>
 		function initMap() {
@@ -47,7 +49,11 @@ html, body {
 				return new google.maps.Marker({
 					position : location,
 					label : labels[i % labels.length],
-					map : map
+					map : map,
+					icon: {
+			            path: google.maps.SymbolPath.CIRCLE,
+			            scale: 5
+			          }
 					
 				});
 			});
@@ -58,7 +64,7 @@ html, body {
 			var circles = centers.map(function(center, i) {
 				return new google.maps.Circle({
 					center : center,
-					radius : 20,
+					radius : radius[i],
 					strokeColor : "#0000FF",
 					strokeOpacity : 0.3,
 					strokeWeight : 1,
@@ -67,6 +73,9 @@ html, body {
 					map : map
 				});
 			});
+			/*for(j=0;i<circles.length;j++) {
+				circles[j].setRadius(radius[j]);
+			}*/
 
 		}
 
@@ -94,6 +103,15 @@ html, body {
 			}
 			Location l = centers.get(centers.size() - 1);
 			out.println("{lat: " + l.getLatitude() + ", lng: " + l.getLongitude() + "}");%>
+		]
+		var radius = [
+			<%for(int i=0;i<clusters.size();i++) {
+				Cluster c=clusters.get(i);
+				out.println(c.getRadius()+",");
+			}
+			out.println(clusters.get(clusters.size()-1).getRadius());
+			//System.out.println(c.getRadius());
+			%>
 		]
 
 		//

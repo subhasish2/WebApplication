@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 public class Cluster {
 	int id;
+	Location centroid;
+	long radius;
 	LinkedList<Location> points;
 
 	public Cluster(int id) {
@@ -57,7 +59,7 @@ public class Cluster {
         Double longitude=Math.toDegrees(centralLongitude);
         Location center=new Location("", latitude, longitude);
         double min_distance=center.distanceTo(points.get(0));
-        Location centroid=points.get(0);
+        centroid=points.get(0);
         for(int i=1;i<points.size();i++) {
         	Location l=points.get(i);
         	Double distance=center.distanceTo(l);
@@ -67,6 +69,18 @@ public class Cluster {
         	}
         }
         return centroid;
+	}
+	public long getRadius() {
+		double max_distance=centroid.distanceTo(points.get(0));
+        for(int i=1;i<points.size();i++) {
+        	Location l=points.get(i);
+        	Double distance=centroid.distanceTo(l);
+        	if(distance>max_distance) {
+        		max_distance=distance;
+        	}
+        }
+        radius=Math.round(max_distance+0.4);
+        return radius;
 	}
 	
 }
