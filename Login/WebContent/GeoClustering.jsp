@@ -25,11 +25,12 @@ html, body {
 <body>
 	<div id="map"></div>
 	<%
-		String filename = "C:/Users/Subhasish/git/WebApp/Login/csv/bike.csv";
+		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/bike.csv";
 		DBSCAN d = new DBSCAN(filename, 20, 2);
 		String outfile = d.DBSCAN_Clustering();
 		ArrayList<Location> centers = d.getCentroids();
 		ArrayList<Cluster> clusters = d.getClusters();
+		ArrayList<Location> noise= d.getNoise();
 	%>
 	<script>
 		function initMap() {
@@ -52,6 +53,18 @@ html, body {
 					map : map,
 					icon: {
 			            path: google.maps.SymbolPath.CIRCLE,
+			            scale: 5
+			          }
+					
+				});
+			});
+			var noise_marker = noise.map(function(location, i) {
+				return new google.maps.Marker({
+					position : location,
+					//label : labels[i % labels.length],
+					map : map,
+					icon: {
+			            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
 			            scale: 5
 			          }
 					
@@ -111,6 +124,18 @@ html, body {
 			}
 			out.println(clusters.get(clusters.size()-1).getRadius());
 			//System.out.println(c.getRadius());
+			%>
+		]
+		var noise = [
+			<%
+			if(noise!=null) {
+				for(int i=0;i<noise.size();i++) {
+					Location loc=noise.get(i);
+					out.println("{lat: " + loc.getLatitude() + ", lng: " + loc.getLongitude() + "},");
+				}
+				Location loc = noise.get(noise.size() - 1);
+				out.println("{lat: " + loc.getLatitude() + ", lng: " + loc.getLongitude() + "}");
+			}
 			%>
 		]
 
