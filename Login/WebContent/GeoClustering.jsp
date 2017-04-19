@@ -25,7 +25,7 @@ html, body {
 <body>
 	<div id="map"></div>
 	<%
-		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/bike.csv";
+		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/newbike.csv";
 		DBSCAN d = new DBSCAN(filename, 20, 2);
 		String outfile = d.DBSCAN_Clustering();
 		ArrayList<Location> centers = d.getCentroids();
