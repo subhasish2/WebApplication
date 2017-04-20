@@ -26,7 +26,7 @@ html, body {
 	<div id="map"></div>
 	<%
 		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/newbike.csv";
-		DBSCAN d = new DBSCAN(filename, 20, 2);
+		DBSCAN d = new DBSCAN(filename, 10, 2);
 		String outfile = d.DBSCAN_Clustering();
 		ArrayList<Location> centers = d.getCentroids();
 		ArrayList<Cluster> clusters = d.getClusters();
@@ -53,7 +53,9 @@ html, body {
 					map : map,
 					icon: {
 			            path: google.maps.SymbolPath.CIRCLE,
-			            scale: 5
+			            scale: 5,
+			            fillColor: 'blue',
+			            strokeColor: 'blue'
 			          }
 					
 				});
@@ -64,8 +66,10 @@ html, body {
 					//label : labels[i % labels.length],
 					map : map,
 					icon: {
-			            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-			            scale: 5
+			            path: google.maps.SymbolPath.CIRCLE,
+			            scale: 5,
+			            fillColor: 'red',
+			            strokeColor: 'red'
 			          }
 					
 				});

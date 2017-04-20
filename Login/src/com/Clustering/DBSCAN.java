@@ -136,7 +136,7 @@ public class DBSCAN {
 		for (Map.Entry<Location, PointStatus> i : visited.entrySet()) {
 			if (i.getValue() == PointStatus.NOISE) {
 				noise.add(i.getKey());
-				System.out.println(i.getKey());
+				//System.out.println(i.getKey());
 
 			}
 		}
