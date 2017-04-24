@@ -12,7 +12,7 @@
 <title>Geo Clustering</title>
 <style>
 #map {
-	height: 100%;
+	height: 95%;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -25,15 +25,19 @@ html, body {
 <body>
 	<div id="map"></div>
 	<%
-		String filename = "C:/Users/Subhasish/git/WebApplication/Login/csv/newbike.csv";
-		DBSCAN d = new DBSCAN(filename, 10, 2);
+		String filename = "C:/Users/Subhasish/git/WebApp/Login/csv/newbike.csv";
+		DBSCAN d = new DBSCAN(filename, 10, 4);
 		String outfile = d.DBSCAN_Clustering();
 		ArrayList<Location> centers = d.getCentroids();
 		ArrayList<Cluster> clusters = d.getClusters();
 		ArrayList<Location> noise= d.getNoise();
 	%>
+	<div id="info">
+	<p>No of Cluster: <%out.println(clusters.size());%></p>
+	</div>
 	<script>
-		function initMap() {
+	//document.getElementById('info').innerHTML="<h2>Number of Cluster: "+<%out.println(clusters.size());%>+"</h2>";
+	function initMap() {
 
 			var map = new google.maps.Map(document.getElementById('map'), {
 				zoom : 12,
@@ -54,7 +58,7 @@ html, body {
 					icon: {
 			            path: google.maps.SymbolPath.CIRCLE,
 			            scale: 5,
-			            fillColor: 'blue',
+			           	fillColor: 'blue',
 			            strokeColor: 'blue'
 			          }
 					
@@ -97,7 +101,7 @@ html, body {
 		}
 
 		var locations = [
-	<%File file = new File(outfile);
+	<% File file = new File(outfile);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNext()) {
 				String header = scan.nextLine();
